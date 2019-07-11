@@ -1,0 +1,50 @@
+{%load custom_tags%}
+
+<html>
+<head>
+    <title>{{post.title}}</title>
+<style>
+h2
+{
+box-shadow:0px 10px 10px black,
+            0px 6px 6px  white;
+}
+</style>
+</head>
+<body>
+<h2>post written by {{posts.author}}</h2>
+slug = {{posts.slug}}<br>
+published = {{posts.publish}}<br>
+created = {{posts.created}}<br>
+<h2>{{posts.title}}</h2>
+<blockquote>
+    the blog is as follows:
+    <div class="content" style="font-family:monospace;">{{posts.body|markdown}}</div>
+</blockquote>
+
+<hr>
+<h2>
+    similar posts
+</h2>
+{%for post in similar_post%}
+<p>
+    <a href="{{post.get_absolute_url}}">{{post.title}}</a>
+</p>
+{%endfor%}
+<hr>
+{%	with	comments.count	as	total_comments	%}
+<h2>{{	total_comments	}}	comment{{	total_comment|pluralize	}}</h2>
+{%	endwith	%}
+{%	for	comment	in	comments	%}
+<div	class="comment">
+    <p	class="info">
+        Comment	{{	forloop.counter	}}	by	{{	comment.name	}}
+        {{	comment.created	}}				</p>
+    {{	comment.body|linebreaks	}}		</div>
+{%empty%}
+{%	endfor	%}
+{%	if	new_comment	%}		<h2>Your	comment	has	been	added.</h2>
+{%	else	%}		<h2>Add	a	new	comment</h2>		<form	action="."	method="post">				{{	comment_form.as_p	}}				{%	csrf_token	%}				<p><input	type="submit"	value="Add	comment"></p>		</form> {%	endif	%}
+
+</body>
+</html>

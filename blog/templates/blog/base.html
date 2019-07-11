@@ -1,0 +1,64 @@
+{%load custom_tags%}
+{%load static%}
+<html>
+<head>
+    <title>{%block title%}{%endblock%}</title>
+    <link rel="stylesheet" type="text/css" href="{%static 'blog/main.css'%}">
+</head>
+<body>
+<div class="parent">
+<div id="content">
+    {%block content%}{%endblock%}
+
+
+</div>
+<style>
+
+
+.parent{
+display:flex;
+}
+.content
+{
+flex:3;
+
+}
+.content:hover
+{
+background-color:cyan;
+}
+.container
+{
+flex:3;
+background-color:grey;
+}
+li
+{
+font-size:20px;
+font-family:monospace;
+padding-top:20px;
+background-color:grey;
+margin-right:60px;
+}
+</style>
+<div id="container">
+<div id="sidebar" style="background-color:grey;height:100%;">
+    <h1>Sidebar</h1>
+    <ul>
+
+      <li> Latest posts:</li>
+
+      {%show_latest_post 2%}
+    <li>
+        Total posts are {%count%}
+    </li>
+       <li>
+           Most Commented POst:
+       </li>
+        {%most_commented 2%}
+    </ul>
+</div>
+</div>
+</div>
+</body>
+</html>

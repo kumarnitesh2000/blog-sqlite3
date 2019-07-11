@@ -1,0 +1,43 @@
+{%extends 'blog/base.html'%}
+{%load custom_tags%}
+{%block title%}My Blog{%endblock%}
+<h1>Blog</h1>
+{%block content%}
+<h1>Blog</h1>
+{%if tag %}
+<h2>
+    posts tagged with "{{tag.name}}"
+</h2>
+{%endif%}
+{%for post in posts%}
+<br>
+<style>
+    a:hover
+    {
+    background-color:red;
+    }
+</style>
+<p	class="tags">Tags:
+    {%for tag in post.tags.all%}
+<a href="{%url 'blog:post_list_by_tag' tag.slug%}">{{tag.name}}</a>
+    {%if not forloop.last %},{%endif%}
+    {%endfor%}
+</p>
+<a href="{{post.get_absolute_url}}">{{post.title}}</a>
+Published on {{post.publish}} by {{post.author}}
+<blockquote style="background-color:grey;font-family:monospace;padding:40px;">
+    {{post.body|markdown|truncatewords:30}}
+</blockquote>
+<p>
+    hey want to <a href="{%url 'blog:post_share' post.id%}">SHARe</a>the post
+</p>
+<hr style="color:cyan;">
+<hr style="color:cyan;">
+
+{%endfor%}
+
+{%include 'blog/pagination.html' with page=posts%}
+
+
+
+{%endblock%}

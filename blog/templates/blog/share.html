@@ -1,0 +1,39 @@
+{%extends 'blog/base.html' %}
+
+{%block title%}Share a post {%endblock%}
+{%block content%}
+{%if sent %}
+<h1>Email successfully sent</h1>
+<p style="background-color:green;">
+    "{{post.title}}" was successfully sent to {{form.cleaned_data.to}}.
+</p>
+{%else%}
+<style>
+    .form-group
+    {
+    background-color:grey;
+    padding-top:20px;
+    font-size:20px;
+    display:flex;
+    flex-direction:column;
+    }
+    input:hover{
+    background-color:cyan;
+    }
+    textarea{
+    background-color:LightGrey;
+    }
+   h1{font-family:monospace;}
+</style>
+<h1>Share the post {{post.title}} by email {{form.cleaned_data.email}} .</h1>
+<form action="." method="post" class="form-group">
+    {{form.as_p}}
+    {%csrf_token%}
+    <input style="font-size:20px;" type="submit" value="send email">
+</form>
+  {%if not_connect%}
+<p style="background-color:red;">hey please check your network connection</p>
+   {%endif%}
+{%endif%}
+
+{%endblock%}
