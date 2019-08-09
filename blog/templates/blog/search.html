@@ -1,0 +1,50 @@
+{%extends 'blog/base.html' %}
+{%block title%}Search{%endblock%}
+{%block content%}
+{%if query%}
+<style>
+    .cont{
+    padding:50px;
+    }
+</style>
+<div class="cont">
+<h1 style="font-family:monospace;color:cyan;">
+    Post containing<div style="font-family:Helvetica;font-size:25px;color:orange">{{query}}</div>
+</h1>
+<h3>
+    {%with results.count as total_results%}
+    <h2 style="font-family:monospace;color:blue;">
+        Found {{total_results}} result {{total_result}}
+    </h2>
+
+    {%endwith%}
+</h3>
+
+<ul>
+        {%for post in results %}
+        <li>
+            <a href="{{post.get_absolute_url}}">{{post.title}}</a>
+        </li>  {%empty%}
+       <h2 style="font-family:monospace;color:blue;">
+           No results matching your query
+       </h2>
+        {%endfor%}
+    </ul>
+    <h2>According to the ranking the search is as follows:</h2>
+<ul>
+        {%for post in result %}
+        <li>
+            <a href="{{post.get_absolute_url}}">{{post.title}}</a>
+        </li></ul>
+{%endfor%}
+{%else%}
+<h1 style="font-family:monospace;color:cyan;">
+    Search for Post
+</h1>
+<form action="." method="get">
+    {{form.as_p}}
+    <input type="submit" value="Search">
+</form>
+</div>
+{%endif%}
+{%endblock%}

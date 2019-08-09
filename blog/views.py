@@ -1,11 +1,15 @@
 from django.shortcuts import render,get_object_or_404
 from .models import PublishedManager,Post,Comment
 from django.core.paginator import Paginator,EmptyPage,PageNotAnInteger
-from .forms import EmailPost,CommentForm
+from .forms import EmailPost,CommentForm,SearchForm
 from django.core.mail import send_mail
 from taggit.models import Tag
 from django.db.models import Count
-
+from django.contrib.postgres.search import SearchVector,SearchQuery,SearchRank,TrigramSimilarity
+from .serializers import PostSerializer
+from rest_framework import status
+from rest_framework.response import Response
+from rest_framework.views import APIView
 def post_list(request,tag_slug=None):
 
     object_list = Post.published.all()
@@ -108,3 +112,44 @@ def filter(request):
     context = {'posts':posts}
 
     return render(request,template,context)
+
+
+def post_search(request):
+    query=None
+    context=None
+    results=None
+    trigram_results=None
+    result=None
+    form=SearchForm()
+    if 'query' in request.GET:
+        form=SearchForm(request.GET)
+        if form.is_valid():
+            query=form.cleaned_data['query']
+            print(query)
+            search_vector = SearchVector('title', 'body')
+            search_query = SearchQuery(query)
+            result=Post.published.annotate(search=search_vector,rank=SearchRank(search_vector,search_query)).filter(search=search_query).order_by('-rank')
+            trigram_results=Post.published.annotate(similarity=TrigramSimilarity('title',query)).filter(similarity__gt=0.3).order_by('-similarity')
+    context={'form':form,'results':trigram_results,'result':result,'query':query}
+    template='blog/search.html'
+    return render(request,template,context)
+
+
+class Postlist():
+    def get(self):
+        post=Post.published.all()
+        serial=PostSerializer(post,many=True)
+        return Response(serial.data)
+    def post(self):
+        pass
+
+
+
+'''
+            results=Post.published.annotate(search=SearchVector('title','body')).filter(search=query)
+            #now code to search according to certain ranking
+            search_vector=SearchVector('title','body')
+            search_query=SearchQuery(query)
+            result=Post.published.annotate(search=search_vector,rank=SearchRank(search_vector,search_query)).filter(search=search_query).order_by('-rank')
+           #trigram_results=Post.published.annotate(similarity=TrigramSimilarity(('title','body
+'''

@@ -15,9 +15,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path,include
-
+from blog import views
+from rest_framework.urlpatterns import format_suffix_patterns
 urlpatterns = [
     path('',include('blog.urls',namespace='blog')),
     #now we can used as the (blog:post_list) as the url
     path('admin/', admin.site.urls),
+    path('post/', views.Postlist),
 ]
+url_patterns= format_suffix_patterns(urlpatterns)

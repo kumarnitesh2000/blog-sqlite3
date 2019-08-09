@@ -8,7 +8,10 @@
 <body>
 <div class="parent">
 <div id="content">
-    {%block content%}{%endblock%}
+    <h2 style="color:orange;"><a href="{%url 'blog:post_list'%}">Home</a></h2>
+
+    {%block content%}
+{%endblock%}
 
 
 </div>
@@ -56,6 +59,10 @@ margin-right:60px;
            Most Commented POst:
        </li>
         {%most_commented 2%}
+        <li>
+            <h2>hey want to <a href="{%url 'blog:post_search' %}">Search something</a></h2>
+
+        </li>
     </ul>
 </div>
 </div>

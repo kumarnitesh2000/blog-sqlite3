@@ -1,9 +1,9 @@
 {%extends 'blog/base.html'%}
 {%load custom_tags%}
 {%block title%}My Blog{%endblock%}
-<h1>Blog</h1>
 {%block content%}
 <h1>Blog</h1>
+
 {%if tag %}
 <h2>
     posts tagged with "{{tag.name}}"
@@ -23,7 +23,7 @@
     {%if not forloop.last %},{%endif%}
     {%endfor%}
 </p>
-<a href="{{post.get_absolute_url}}">{{post.title}}</a>
+<a href="{{post.get_absolute_url}}">{{post.title|markdown}}</a>
 Published on {{post.publish}} by {{post.author}}
 <blockquote style="background-color:grey;font-family:monospace;padding:40px;">
     {{post.body|markdown|truncatewords:30}}

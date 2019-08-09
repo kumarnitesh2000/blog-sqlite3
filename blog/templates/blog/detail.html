@@ -16,7 +16,7 @@ box-shadow:0px 10px 10px black,
 slug = {{posts.slug}}<br>
 published = {{posts.publish}}<br>
 created = {{posts.created}}<br>
-<h2>{{posts.title}}</h2>
+<h2>{{posts.title|markdown}}</h2>
 <blockquote>
     the blog is as follows:
     <div class="content" style="font-family:monospace;">{{posts.body|markdown}}</div>
