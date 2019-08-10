@@ -21,6 +21,6 @@ urlpatterns = [
     path('',include('blog.urls',namespace='blog')),
     #now we can used as the (blog:post_list) as the url
     path('admin/', admin.site.urls),
-    path('post/', views.Postlist),
+    path('post/', views.Postlist.as_view()),
 ]
 url_patterns= format_suffix_patterns(urlpatterns)

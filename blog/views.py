@@ -134,9 +134,9 @@ def post_search(request):
     template='blog/search.html'
     return render(request,template,context)
 
-
-class Postlist():
-    def get(self):
+#inheritence conceppt
+class Postlist(APIView):
+    def get(self,request):
         post=Post.published.all()
         serial=PostSerializer(post,many=True)
         return Response(serial.data)
