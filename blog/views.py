@@ -140,8 +140,11 @@ class Postlist(APIView):
         post=Post.published.all()
         serial=PostSerializer(post,many=True)
         return Response(serial.data)
-    def post(self):
-        pass
+    def post(self,request):
+        serial=PostSerializer(data=request.data)
+        if serial.is_valid():
+            serial.save()
+            return Response(serial.data,status=status.HTTP_201_CREATED)
 
 
 
